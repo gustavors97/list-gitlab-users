@@ -2,16 +2,18 @@
   <div class="data-source-autocomplete-field">
     <v-autocomplete
       :ref="name"
+      no-filter
       class="rounded-lg"
       :multiple="multiple"
-      :item-text="itemText"
+      v-model="dataModel"
       :value="modelValue"
+      :item-text="itemText"
       :append-icon="appendIcon"
       :chips="chips"
       :small-chips="smallChips"
       :name="name"
       :label="title"
-      :rules="rules || [() => !!modelValue || 'This field is required']"
+      :rules="rules || [() => !!dataModel || 'This field is required']"
       :disabled="disabled"
       :loading="loading"
       :hint="hintMessage"
@@ -29,18 +31,31 @@
       <template #selection="data" v-if="chips">
         <v-chip
           v-bind="data.attrs"
-          :input-value="data.selected"
+          :input-value="data.item.node.name"
           close="close"
           @click="data.select"
           @click:close="remove(data.item)"
-          v-if="value"
+          v-if="data.item.node.name"
         >
-          {{ data.item.node.username }}
+          <v-avatar left>
+            <v-img :src="data.item.node.avatarUrl"></v-img>
+          </v-avatar>
+          {{ data.item.node.name }}
         </v-chip>
       </template>
 
       <template #item="data" v-if="chips">
-        <v-list-item-content v-text="data.item.node.username" />
+        <v-list-item-content class="ma-n5">
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-img :src="data.item.node.avatarUrl"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="data.item.node.name"></v-list-item-title>
+              <v-list-item-subtitle v-html="data.item.node.username"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-content>
       </template>
 
       <template #append-item>
@@ -156,6 +171,7 @@ export default {
     return {
       loading: false,
       modelValue: null,
+      dataModel: null,
       /**
        * The term currently being search. Typed by the user
        */
@@ -238,7 +254,7 @@ export default {
      */
     async loadMoreVisibilityChanged(isVisible) {
       if (isVisible) {
-        this.search(this.term, true);
+        this.search(this.searchInput, true);
       }
     },
     handleChange(event) {

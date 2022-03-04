@@ -14,9 +14,11 @@ export default class DataSourceAPI {
    *
    * @member {boolean}
    */
-  hasMore = true
+  hasMore = false
 
   endCursor = ""
+
+  term = ""
 
   /**
    * Searches for elements that fit the search parameters and stores them in this object

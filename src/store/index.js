@@ -1,17 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import env from '@/env.json'
+
+axios.defaults.headers.common['Authorization'] = `Bearer ${env.GITLAB_ACCESS_TOKEN}`;
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     apiBaseUrl: "https://gitlab.com/api/graphql",
+    isLoadingMore: false,
     form: {
       data: [],
       usersList: [],
       pageInfo: {},
-    }
+    },
   },
   getters: {
     usersList: (state) => {
@@ -25,9 +29,11 @@ export default new Vuex.Store({
       }
     },
     setUsersList(state, payload) {
-      if (payload && payload.length > 0) {
+      if (state.isLoadingMore) {
         const list = state.form.usersList;
         state.form.usersList.push.apply(list, payload);
+      } else {
+        state.form.usersList = payload;
       }
     },
     setPageInfo(state, payload) {
@@ -37,7 +43,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async getUsersList({ state, commit }, data = { search: "", limit: 10, after: "" }) {
+    async getUsersList({ state, commit }, data = { search: "", limit: 10, after: "", isLoadingMore: false }) {
+      state.isLoadingMore = data.isLoadingMore;
       try {
         const response = await axios.post(state.apiBaseUrl, {
           query: `{

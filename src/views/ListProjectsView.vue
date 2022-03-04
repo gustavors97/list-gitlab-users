@@ -11,10 +11,20 @@
           show-group-by
         >
           <template v-slot:item="{ item }">
-            <template v-for="(value, name, index) in item.username">
-              <div class="font-weight-bold px-4 py-2" :key="index">
-                {{ value }}
-              </div>
+            <template v-for="(value, index) in item.node">
+              <v-list-item-content class="py-0" :key="index">
+                <v-list-item>
+                  <v-list-item-avatar>
+                    <v-img :src="value.avatarUrl"></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title v-html="value.name"></v-list-item-title>
+                    <v-list-item-subtitle
+                      v-html="value.username"
+                    ></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-content>
             </template>
           </template>
         </v-data-table>
@@ -46,17 +56,14 @@ export default {
     items: {
       get() {
         const items = this.$store.state.form.data;
-
-        var test = items.map((item) => {
+        return items.map((item) => {
           return {
             name: item.name,
-            username: item.search.map((user) => {
-              return user.node.username;
+            node: item.search.map((value) => {
+              return value.node;
             }),
           };
         });
-
-        return test;
       },
     },
   },
@@ -68,6 +75,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>
