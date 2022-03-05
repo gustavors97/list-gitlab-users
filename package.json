@@ -5,11 +5,13 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.26.0",
-    "core-js": "^3.8.3",
+    "core-js": "^3.21.1",
+    "regenerator-runtime": "^0.13.9",
     "vue": "^2.6.14",
     "vue-i18n": "^8.27.0",
     "vue-observe-visibility": "^1.0.0",
@@ -18,18 +20,24 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
+    "@babel/core": "^7.17.5",
     "@babel/eslint-parser": "^7.12.16",
+    "@babel/preset-env": "^7.16.11",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
+    "@vue/test-utils": "^1.3.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^27.5.1",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
+    "jest": "^27.5.1",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
     "vue-cli-plugin-vuetify": "~2.4.5",
+    "vue-jest": "^3.0.7",
     "vue-template-compiler": "^2.6.14",
     "vuetify-loader": "^1.7.0"
   },
@@ -52,5 +60,16 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    }
+  }
 }
