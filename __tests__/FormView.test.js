@@ -1,24 +1,31 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import Vuetify from 'vuetify';
-import { mount } from '@vue/test-utils';
-import FormView from '@/views/FormView.vue';
+import Vuetify from 'vuetify'
+import { createLocalVue, mount } from '@vue/test-utils'
+import Formview from '@/views/FormView.vue'
 
-describe("FormView", () => {
-  let wrapper;
+describe("FormView.vue", () => {
+  const localVue = createLocalVue()
+  let vuetify
+  let wrapper
 
   beforeAll(() => {
-    const vuetify = new Vuetify()
-    wrapper = mount(FormView, {
-      vuetify
-    });
+    vuetify = new Vuetify()
+
+    wrapper = mount(Formview, {
+      localVue,
+      vuetify,
+    })
   });
 
-  test("Setting values but forgetting a required field", async () => {
-    const html = wrapper.html();
-    console.log(html)
-    const input = wrapper.find('input[id="input-6');
-    input.setValue("Lorem ipsum");
-    expect(wrapper.text()).toContain("Lorem ipsum");
+  test('The component is a Vue instance', () => {
+    expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+
+  test('The correct properties are available in the form component', () => {
+    const expected = ['name', 'details', 'startDate', 'endDate', 'search']
+    const received = Object.keys(wrapper.vm.$data.data)
+
+    expect(received).toEqual(expected)
   })
 })

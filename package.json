@@ -67,9 +67,17 @@
       "json",
       "vue"
     ],
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/src/$1",
+      "vuetify/lib(.*)": "<rootDir>/node_modules/vuetify/es5$1"
+    },
     "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    }
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest",
+      ".*\\.(js)$": "babel-jest"
+    },
+    "testEnvironment": "jsdom",
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!(vuetify)/)"
+    ]
   }
 }
