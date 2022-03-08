@@ -3,29 +3,39 @@
     <v-row>
       <v-col cols="12" lg="6" class="mx-auto">
         <v-data-table
+          :headers="headers"
           :items="items"
+          :items-per-page="5"
           item-key="name"
           sort-by="name"
-          group-by="name"
           class="elevation-1"
-          show-group-by
         >
           <template v-slot:item="{ item }">
-            <template v-for="(value, index) in item.node">
-              <v-list-item-content class="py-0" :key="index">
-                <v-list-item>
-                  <v-list-item-avatar>
-                    <v-img :src="value.avatarUrl"></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title v-html="value.name"></v-list-item-title>
-                    <v-list-item-subtitle
-                      v-html="value.username"
-                    ></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-content>
-            </template>
+            <tr>
+              <td class="text-left px-4 font-weight-medium">
+                {{ item.name }}
+              </td>
+
+              <td class="d-flex px-4">
+                <template v-for="(value, index) in item.node">
+                  <span :key="index" class="d-flex mr-4 my-auto">
+                    <v-avatar size="25" class="mr-2 my-auto">
+                      <v-img :src="value.avatarUrl"></v-img>
+                    </v-avatar>
+
+                    <div>
+                      <v-list-item-title
+                        v-html="value.name"
+                      ></v-list-item-title>
+                      <v-list-item-subtitle
+                        v-html="value.username"
+                        class="grey--text mt-n2"
+                      ></v-list-item-subtitle>
+                    </div>
+                  </span>
+                </template>
+              </td>
+            </tr>
           </template>
         </v-data-table>
 
@@ -66,6 +76,21 @@ export default {
         });
       },
     },
+  },
+
+  data() {
+    return {
+      headers: [
+        {
+          text: "Project name",
+          align: "start",
+          filterable: false,
+          value: "name",
+          width: "150px"
+        },
+        { text: "Users", value: "users" },
+      ],
+    };
   },
 
   methods: {

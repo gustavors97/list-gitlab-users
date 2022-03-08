@@ -5,6 +5,7 @@
       :data-source="userDataSource"
       :title="label"
       :value="value"
+      item-text="node.name"
       multiple
       @change="onChange($event)"
     />

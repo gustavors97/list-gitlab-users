@@ -2,7 +2,6 @@
   <div class="data-source-autocomplete-field">
     <v-autocomplete
       :ref="name"
-      no-filter
       class="rounded-lg"
       :multiple="multiple"
       v-model="dataModel"
@@ -25,6 +24,7 @@
       color="primary"
       :search-input.sync="searchInput"
       required
+      cache-items
       @change="handleChange"
       @focus="handleFocus"
     >
